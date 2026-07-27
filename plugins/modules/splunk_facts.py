@@ -451,6 +451,9 @@ class SplunkMetadata(object):
 
         # If a relative path is given, assume it's relative to $SPLUNK_HOME/etc
         if not app_root.is_absolute():
+            if not self.splunk_home:
+                self.error("Cannot handle relative app_dir of '%s' when splunk_home is not set" % app_root)
+                return
             app_root = Path(self.splunk_home) / "etc" / app_root
 
         if not app_root.is_dir():
@@ -500,7 +503,8 @@ class SplunkMetadata(object):
         if self._fail:
             return dict(failed=True, msg="\n".join(self._error))
         sf = {}
-        sf[self._prefix % "home"] = os.fspath(self.splunk_home)
+        if self.splunk_home:
+            sf[self._prefix % "home"] = os.fspath(self.splunk_home)
         for (key, value) in self._data.items():
             sf[self._prefix % key] = value
         if self._error:

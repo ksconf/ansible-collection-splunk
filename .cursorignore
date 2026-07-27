@@ -1,0 +1,2 @@
+# Local ansible runtime install path; duplicates collection sources
+.ansible/

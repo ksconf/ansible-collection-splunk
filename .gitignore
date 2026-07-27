@@ -7,6 +7,9 @@
 # Ansible lint
 .cache
 
+# Local ansible collection / module discovery path (not source)
+.ansible/
+
 # Developer stuff
 .vscode
 
