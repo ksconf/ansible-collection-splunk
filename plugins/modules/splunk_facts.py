@@ -93,22 +93,29 @@ ansible_facts:
       returned: always
       contains:
         version:
+          description: Splunk version string from C(etc/splunk.version).
+          type: str
           sample: 9.0.4
         build:
+          description: Splunk build number from C(etc/splunk.version).
           type: int
         product:
+          description: Splunk product name from C(etc/splunk.version).
           type: str
         platform:
+          description: Splunk platform identifier from C(etc/splunk.version).
           type: str
 
     ansible_splunk_dist_search:
-      description: distributed search public key
-
-    server_public_key:
-      description: public key for splunkd
+      description: Distributed search public key details.
+      type: dict
+      contains:
+        server_public_key:
+          description: Contents of the trusted distributed search public key file.
+          type: str
 
     ansible_splunk_config:
-      description: splunk configs
+      description: Splunk configs.
       type: dict
       sample:
         <config>:
@@ -132,6 +139,7 @@ ansible_facts:
           description: Name of the user Splunk runs as.
           type: str
         PYTHONHTTPSVERIFY:
+          description: Whether Splunk's embedded Python verifies HTTPS certificates.
           type: str
 
     ansible_splunk_swid:
@@ -144,8 +152,10 @@ ansible_facts:
           type: str
           sample: UniversalForwarder
         version:
+          description: Software identity version from the SWID tag.
           type: str
         patch:
+          description: Software identity patch level from the SWID tag, when present.
           type: str
 
     ansible_splunk_ksconf:
@@ -154,17 +164,23 @@ ansible_facts:
       type: dict
       contains:
         version:
+          description: Installed ksconf version string.
           type: str
         vcs_info:
+          description: Optional VCS metadata for the installed ksconf package.
           # Double check on this. could be a tuple?
           type: str
         build:
+          description: ksconf build number, when available.
           type: int
         package:
+          description: Python distribution/package name for ksconf.
           type: str
         path:
+          description: Filesystem path to the installed ksconf package.
           type: str
         commands:
+          description: Inventory of available ksconf subcommands when I(ksconf=detail).
           type: dict
           contains:
             <command>:
@@ -177,6 +193,7 @@ ansible_facts:
                   description: class name
                   type: str
                 distro:
+                  description: Distribution or entry-point source for the subcommand.
                   type: str
                 error:
                   description:
@@ -216,9 +233,11 @@ ansible_facts:
           returned: always
           contains:
             version:
+              description: App version from C(app.conf).
               type: str
               returned: always
             author:
+              description: App author from C(app.conf).
               type: str
               returned: always
             description:
@@ -226,10 +245,13 @@ ansible_facts:
                            (This is not typically shown anywhere in the UI)
               type: str
             state:
+              description: App enabled/disabled state from C(app.conf), when present.
               type: str
             build:
+              description: App build number from C(app.conf), when present.
               type: int
             check_for_updates:
+              description: Whether the app checks for updates, when present.
               type: bool
             label:
               description: Display name
@@ -245,12 +267,16 @@ ansible_facts:
             # Check to see if this is still accurate as of v0.18+ of this module
           contains:
             ansible_module_version:
+              description: Version of the sideload module that recorded the install state.
               type: str
             installed_at:
+              description: Timestamp of when the app was sideloaded.
               type: str
             src_hash:
+              description: Hash of the source package used for the sideload install.
               type: str
             src_path:
+              description: Source path of the package used for the sideload install.
               type: str
 
     ansible_splunk_app_root_missing:
