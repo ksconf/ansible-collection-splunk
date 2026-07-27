@@ -13,7 +13,7 @@ from random import randint
 from ansible.module_utils.basic import AnsibleModule
 
 
-__version__ = "0.26.1"
+__version__ = "0.26.2"
 
 SIDELOAD_STATE_FILE = ".ksconf_sideload.json"
 
