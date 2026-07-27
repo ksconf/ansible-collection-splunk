@@ -10,7 +10,6 @@ import re
 from pathlib import Path
 
 from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.cdillc.splunk.plugins.module_utils.ksconf_shared import (
     SIDELOAD_STATE_FILE, find_splunk_home)
 
@@ -38,6 +37,8 @@ options:
             - Path to Splunk installation path. If not provided, this
               module will check the $SPLUNK_HOME environment variable
               and then several commonly used install paths.
+            - Can also be set to I(skip) to disable normal Splunk information
+              collection.  Useful in Splunk-detached cases, like app dir scans.
         required: false
         type: path
         default: null
@@ -54,7 +55,8 @@ options:
     app_dirs:
         description:
             - List of paths (relative to I($SPLUNK_HOME/etc)).
-            - And absolute path can be provided to check a specific path.
+            - An absolute path can be provided to check a specific path.
+            - An empty list C([]) can be provided to disable app inventory collection.
         type: list
         required: false
         elements: str
@@ -76,7 +78,7 @@ Or specify a custom Splunk install home
 - splunk_facts: splunk_home=/opt/acmeco/splunk
 
 Splunk facts for app hosted in a git repository:
-- splunk_facts: app_dirs=/opt/git-repo/apps
+- splunk_facts: app_dirs=/opt/git-repo/apps splunk_home=skip
 '''
 
 RETURN = r'''
@@ -284,17 +286,22 @@ class SplunkMetadata(object):
             if not splunk_home:
                 self.fail("Couldn't locate SPLUNK_HOME.")
                 return
-        self.splunk_home = Path(splunk_home)
+        if splunk_home == "skip":
+            # Special case where only apps dir or ksconf bits are evaluated
+            self.splunk_home = None
+        else:
+            self.splunk_home = Path(splunk_home)
         self._fail = False
         self._error = []
         self._data = {}
         self._prefix = 'ansible_splunk_%s'
-        self.fetch_version()
-        self.fetch_dist_search_keys()
-        self.fetch_guid()
-        self.fetch_swid()
-        self.fetch_launch_vars()
-        self.fetch_splunksecret()
+        if self.splunk_home:
+            self.fetch_version()
+            self.fetch_dist_search_keys()
+            self.fetch_guid()
+            self.fetch_swid()
+            self.fetch_launch_vars()
+            self.fetch_splunksecret()
         if ksconf_level != "skip":
             self.fetch_ksconf_version(ksconf_level)
         for app_dir in app_dirs:

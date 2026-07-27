@@ -1,3 +1,6 @@
+## Release 0.26.3
+* Add `splunk_home=skip` support to `splunk_facts` command.  This allows an apps folder to be inventories without requiring access to a live SPLUNK_HOME location.
+
 ## Release 0.26.2
 * Add some basic custom stats to the `ksconf_package` command.  (This is still a proof-of-concept)
 
