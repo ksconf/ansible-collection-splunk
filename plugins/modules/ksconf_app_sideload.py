@@ -12,7 +12,6 @@ from pathlib import Path, PurePath
 
 from ansible.module_utils._text import to_bytes, to_native
 from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.cdillc.splunk.plugins.module_utils.ksconf_shared import (
     SIDELOAD_STATE_FILE, __version__ as collection_version,
     check_ksconf_version)
@@ -159,29 +158,29 @@ EXAMPLES = r'''
     dest: /opt/splunk/etc/apps
 
 - name: Install rendered apps from version control & existing tarballs
-    cdillc.splunk.ksconf_app_sideload:
-      # Add prefix for archived apps
-      src: "{{ apps_folder }}/{{ item }}"
-      dest: "{{ splunk_home }}/etc/deployment-apps"
-      owner: "{{ splunk_nix_user }}"
-      group: "{{ splunk_nix_group }}"
-    # Loop over present + managed apps created from (1) ksconf_package and (2) existing tarballs
-    loop: >
-      {{ app_render_output.results
-        | selectattr("archive")
-        | selectattr("item.state", "eq", "present")
-        | selectattr("item.managed")
-        | map(attribute="archive")
-        + apps_inventory
-        | selectattr("tarball")
-        | selectattr("state", "eq", "present")
-        | selectattr("managed")
-        | map(attribute="tarball")
-      }}
-    become: true
-    become_user: "{{ splunk_nix_user }}"
-    notify: "reload deployment-server"
-    tags: install'
+  cdillc.splunk.ksconf_app_sideload:
+    # Add prefix for archived apps
+    src: "{{ apps_folder }}/{{ item }}"
+    dest: "{{ splunk_home }}/etc/deployment-apps"
+    owner: "{{ splunk_nix_user }}"
+    group: "{{ splunk_nix_group }}"
+  # Loop over present + managed apps created from (1) ksconf_package and (2) existing tarballs
+  loop: >
+    {{ app_render_output.results
+      | selectattr("archive")
+      | selectattr("item.state", "eq", "present")
+      | selectattr("item.managed")
+      | map(attribute="archive")
+      + apps_inventory
+      | selectattr("tarball")
+      | selectattr("state", "eq", "present")
+      | selectattr("managed")
+      | map(attribute="tarball")
+    }}
+  become: true
+  become_user: "{{ splunk_nix_user }}"
+  notify: "reload deployment-server"
+  tags: install
 '''
 
 

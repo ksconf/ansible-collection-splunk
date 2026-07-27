@@ -129,7 +129,6 @@ notes:
 '''
 
 EXAMPLES = r'''
-
 - name: Reload the deployment server
   cdillc.splunk.splunk_cli:
     cmd: "{{splunk_home}}/bin/splunk reload deploy-server"
@@ -149,7 +148,6 @@ EXAMPLES = r'''
 #   command: splunk add search-server -auth {{splunk_admin_user}}:{{splunk_admin_pass}}
 #            {{sh_url}} -remoteUsername {{sh_user}} -remotePassword {{sh_pass}}
 # This version protect the local and remote credentials
-
 - name: Add search peer
   cdillc.splunk.splunk_cli:
     cmd: add search-server {{sh_url}}
@@ -161,7 +159,6 @@ EXAMPLES = r'''
     password: "{{splunk_admin_pass}}"
     creates: "{{splunk_home}}/.search-peer-added-{{ sh_url | urlencode }}"
     create_on_success: true
-
 '''
 
 
@@ -205,7 +202,7 @@ def main():
         args = shlex.split(cmd)
     except ValueError as e:
         module.fail_json(msg=f"Failed to parse command into arguments.  {e}  "
-                             f"cmd={cmd!r}")
+                         f"cmd={cmd!r}")
 
     if "-auth" in args:
         # In a later version this should be an error

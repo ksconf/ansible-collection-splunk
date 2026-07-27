@@ -22,7 +22,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Tuple
 
 from ansible.module_utils.basic import AnsibleModule
-
 from ansible_collections.cdillc.splunk.plugins.module_utils.ksconf_shared import (
     SIDELOAD_STATE_FILE, __version__ as collection_version,
     check_ksconf_version)
@@ -104,7 +103,6 @@ EXAMPLES = r'''
   cdillc.splunk.ksconf_app_manifest:
     app_dir: /opt/splunk/etc/apps/myapp
     state_file: /opt/splunk/etc/apps/myapp/.ksconf_sideload.json
-
 '''
 
 
@@ -314,7 +312,7 @@ def main():
             except Exception as e:
                 results["result"] = "error"
                 module.fail_json(msg=f"Failed to build state file {state_file} ({results['state_init']}) "
-                                     f"from app {app_dir} due to exception: {type(e).__name__}: {e}", **results)
+                                 f"from app {app_dir} due to exception: {type(e).__name__}: {e}", **results)
                 if raise_exception:
                     raise e
                 return

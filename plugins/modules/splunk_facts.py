@@ -69,16 +69,19 @@ notes:
     - Parameters to enable/disable various config or run-time stats may be added later.
 '''
 
-EXAMPLES = '''
+EXAMPLES = r'''
+- name: Gather facts about the local Splunk install
+  cdillc.splunk.splunk_facts:
 
-Typical use:
-- splunk_facts:
+- name: Gather facts for a custom Splunk install home
+  cdillc.splunk.splunk_facts:
+    splunk_home: /opt/acmeco/splunk
 
-Or specify a custom Splunk install home
-- splunk_facts: splunk_home=/opt/acmeco/splunk
-
-Splunk facts for app hosted in a git repository:
-- splunk_facts: app_dirs=/opt/git-repo/apps splunk_home=skip
+- name: Gather Splunk app facts from a git repository without a local SPLUNK_HOME
+  cdillc.splunk.splunk_facts:
+    app_dirs:
+      - /opt/git-repo/apps
+    splunk_home: skip
 '''
 
 RETURN = r'''

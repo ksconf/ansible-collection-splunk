@@ -24,7 +24,6 @@ from ansible.parsing.vault import VaultEditor, VaultLib, b_HEADER as VAULT_HEADE
 from ansible.plugins.action import ActionBase
 from ansible.template import Templar
 from ansible.utils.display import Display
-
 from ansible_collections.cdillc.splunk.plugins.module_utils.ksconf_shared import (
     __version__ as collection_version, check_ksconf_version, temp_decrypt)
 

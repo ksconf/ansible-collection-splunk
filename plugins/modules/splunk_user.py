@@ -256,7 +256,7 @@ endpoint:
 
 EXAMPLES = r'''
 - name: Create a new user named 'bob'
-  cdillc.splunk.splunk_user::
+  cdillc.splunk.splunk_user:
     state: present
     username: admin
     password: "{{ splunk_admin_password }}"
@@ -269,18 +269,18 @@ EXAMPLES = r'''
 - name: Create a new user remotely
   cdillc.splunk.splunk_user:
     state: present
-    splunkd_uri: "https://{{ ansible_fqdn }}:{{ splunkd_port}}"
+    splunkd_uri: "https://{{ ansible_fqdn }}:{{ splunkd_port }}"
     username: "{{ splunk_admin_username }}"
     password: "{{ splunk_admin_password }}"
     splunk_user: bob
     splunk_pass: aReallyGoodPassword
     roles:
-     - user
-     - admin
+      - user
+      - admin
   delegate_to: localhost
 
 - name: Add bob to the 'delete_stuff' role.  (existing roles are preserved)
-  cdillc.splunk.splunk_user::
+  cdillc.splunk.splunk_user:
     username: admin
     password: "{{ splunk_admin_password }}"
     splunk_user: bob
@@ -288,14 +288,14 @@ EXAMPLES = r'''
     append_roles: true
 
 - name: Terminate bob after data deletion incident
-  cdillc.splunk.splunk_user::
+  cdillc.splunk.splunk_user:
     state: absent
     username: admin
     password: "{{ splunk_admin_password }}"
     splunk_user: bob
 
 - name: Change the password of existing user 'joe'
-  cdillc.splunk.splunk_user::
+  cdillc.splunk.splunk_user:
     username: admin
     password: "{{ splunk_admin_password }}"
     splunk_user: joe
@@ -303,7 +303,7 @@ EXAMPLES = r'''
     update_password: true
 
 - name: Force existing user 'joe' to change their password at next login
-  splunk_user:
+  cdillc.splunk.splunk_user:
     splunkd_uri: https://splunk-sh01.megacorp.example:8089
     username: admin
     password: "{{ splunk_admin_password }}"
@@ -312,16 +312,16 @@ EXAMPLES = r'''
     update_force_change_pass: true
 
 - name: Retrieve information about top users
-  splunk_user:
+  cdillc.splunk.splunk_user:
     state: list
     username: admin
     password: "{{ splunk_admin_password }}"
-    splunk_user: "{{ item }}
-   register: user_info
-   loop:
-     - bob
-     - joe
-     - henry
+    splunk_user: "{{ item }}"
+  register: user_info
+  loop:
+    - bob
+    - joe
+    - henry
 '''
 
 
