@@ -3,7 +3,7 @@
 ## Contents
 
 See the [official docs](https://cdillc-splunk.readthedocs.io/) for the expanded list of all supported functionality.
-Recent updates are documented in the [changelog](https://github.com/Kintyre/ansible-collection-splunk/blob/main/CHANGELOG.md)
+Recent updates are documented in the [changelog](https://github.com/ksconf/ansible-collection-splunk/blob/main/CHANGELOG.md)
 Below is a brief summary of current features.
 
 
@@ -11,7 +11,7 @@ Below is a brief summary of current features.
 
 | Module | Description |
 | ------ | ----------- |
-| [ksconf_package](https://cdillc-splunk.readthedocs.io/en/latest/collections/cdillc/splunk/ksconf_package_module) | Build a Splunk app package from a source app containing [ksconf](https://github.com/Kintyre/ksconf) layers.  Individual layers can be enabled or disabled based on ansible variables.  (This works for non-layered apps too.)  This module is idempotent, making it possible to conditionally roll out changes.  Use this instead of `command: ksconf package ...` |
+| [ksconf_package](https://cdillc-splunk.readthedocs.io/en/latest/collections/cdillc/splunk/ksconf_package_module) | Build a Splunk app package from a source app containing [ksconf](https://github.com/ksconf/ksconf) layers.  Individual layers can be enabled or disabled based on ansible variables.  (This works for non-layered apps too.)  This module is idempotent, making it possible to conditionally roll out changes.  Use this instead of `command: ksconf package ...` |
 | [ksconf_app_sideload](https://cdillc-splunk.readthedocs.io/en/latest/collections/cdillc/splunk/ksconf_app_sideload_module) | Install a Splunk app from a tarball (`.tar.gz` or `.spl`) into a Splunk instance using a sideload technique.  The tarball is extracted into `apps` (where a normal "install" is suitable, or into management folders (i.e., `deployment-apps`, `manager-apps`, `shcluster/apps`) where Splunk provides no official install utility.  On the surface, this is similar to Ansible's `unarchive` module except with much better idempotent behavior; `unarchive` checks to see if the top-level destination folder exists, whereas this module can track installation version and checksum to determine when the archive should be expanded.  (Some of these features are a work in progress; at the moment this is *very* much like Ansible's `unarchive`)  (Please don't confuse this with `ksconf unarchive` which handles getting tarballs into a repository, not installing apps into a Splunk instance.) |
 | [splunk_cli](https://cdillc-splunk.readthedocs.io/en/latest/collections/cdillc/splunk/splunk_cli_module) | Execute a `splunk` command locally or remotely (via a remote Splunkd URI). Unlike using the built-in `command` module, the `password` field alone is marked NO_LOG, so it's possible to see the rest of the command in the logs making troubleshooting easier and auditing more accurate.   Use this instead of `command: "{{splunk_home}}/bin/splunk ..."` |
 | [splunk_control](https://cdillc-splunk.readthedocs.io/en/latest/collections/cdillc/splunk/splunk_control_module) | Use the REST API to stop/restart a running Splunk instance.  This may replace the use of `service`, but both options have advantages in specific use cases. |
